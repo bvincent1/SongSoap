@@ -1,0 +1,6 @@
+<data>
+	<playlist name="test1">
+		<song album="test1" artist="test1" name="test1" />
+		<song album="test2" artist="test2" name="test2" />
+	</playlist>
+</data>
