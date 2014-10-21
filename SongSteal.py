@@ -12,35 +12,6 @@ import random
 from sys import argv
 from datetime import date
 
-
-"""
-#Specify category
-Search("Game of thrones").category(CATEGORY.MOVIES)
-
-#Feel free to chain these, but remember that order or category resets page to 1
-Search("Game of thrones").category(CATEGORY.GAMES).order(ORDER.FILES_COUNT).next()
-
-#Latest has the same behaviour as Search but lacks the ```category()``` method and has no query string
-for t in Latest().order(ORDER.SEED):
-t.lookup()
-
-#Page, order and category can be also specified in constructor
-Search("Game of thrones", category=CATEGORY.GAMES, order=ORDER.AGE, page=5)
-
-#Get results from multiple pages
-for t in Latest().order(ORDER.AGE).pages(3,6):
-t.lookup()
-
-#Get results from all pages starting with the actual page
-for t in Latest().all():
-t.lookup()
-
-#Get list of torrent objects instead of iterator
-Latest().list()
-
-#pages(), all() and list() cant be followed by any other method!
-"""
-
 """
 ["name", "author", "verified_author",
 "category", "size", "files", "age",
@@ -78,49 +49,46 @@ def searchSong(song):
         FITNESS_LIST.append([getTorrentFitness(i, song),i])
     print("Name:%s\nVerifiedAuthor:%s\nVerifiedTorrent:%s\nFiles:%s\nAge:%s\nLink:%s\n" % (i.name, i.verified_author, i.verified_torrent, i.files, i.age, i.download_link))
 
-def checkTorrentName(torrent, fitness, targetName):
-    ## torrent has proper name check
-    searchTerm = r"\b"+targetName+r"\b"
-    name = re.search( searchTerm, torrent.name, re.IGNORECASE)
-    name_value = 7
-    if name:
-        print("Name:", name.group(), " Value +",name_value)
-        fitness += name_value
+class BasicTorrentCheck:
+    def checkTorrentName(torrent, fitness, targetName):
+        ## torrent has proper name check
+        searchTerm = r"\b"+targetName+r"\b"
+        name = re.search( searchTerm, torrent.name, re.IGNORECASE)
+        name_value = 7
+        if name:
+            print("Name:", name.group(), " Value +",name_value)
+            fitness += name_value
 
-def checkVerifiedAuthor(torrent, fitness):
-    ## verified author check
-    verifiedAuthor_value = 5
-    if torrent.verified_author:
-        print("Verified:", torrent.verified_author, " Value +", verifiedAuthor_value)
-        fitness += verifiedAuthor_value
+    def checkVerifiedAuthor(torrent, fitness):
+        ## verified author check
+        verifiedAuthor_value = 5
+        if torrent.verified_author:
+            print("Verified:", torrent.verified_author, " Value +", verifiedAuthor_value)
+            fitness += verifiedAuthor_value
 
-def checkVerifiedTorrent(torrent, fitness):
-    ## verified torrent check
-    verifiedTorrent_value = 5
-    if torrent.verified_torrent:
-        print("Verified:", torrent.verified_torrent, " Value +", verifiedTorrent_value)
-        fitness += verifiedTorrent_value
+    def checkVerifiedTorrent(torrent, fitness):
+        ## verified torrent check
+        verifiedTorrent_value = 5
+        if torrent.verified_torrent:
+            print("Verified:", torrent.verified_torrent, " Value +", verifiedTorrent_value)
+            fitness += verifiedTorrent_value
 
-def checkTorrentSeeders(targetTorrent, fitness, torrentList):
-    ## check relative seeder value
-    seedList = []
-    for torrent in torrentList:
-        seedList.append(int(torrent.seed))
+    def checkTorrentSeeders(targetTorrent, fitness, torrentList):
+        ## check relative seeder value
+        seedList = []
+        for torrent in torrentList:
+            seedList.append(int(torrent.seed))
 
-    cValue = int(targetTorrent.seed)
-    tMax = max(seedList)
-    tMedian = sum(seedList) / len(seedList)
+        cValue = int(targetTorrent.seed)
+        tMax = max(seedList)
+        tMedian = sum(seedList) / len(seedList)
 
-    if tMax == cValue:
-        fitness += 5
-
-    else:
-
+        if tMax == cValue:
+            fitness += 5
 
 
-
-def getSeeds(torrent):
-    return torrent.seed
+    def getSeeds(torrent):
+        return torrent.seed
 
 def getTorrentFitness(torrent, song):
     fitness = 0
