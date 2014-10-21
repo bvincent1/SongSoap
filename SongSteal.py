@@ -50,7 +50,7 @@ def searchSong(song):
     print("Name:%s\nVerifiedAuthor:%s\nVerifiedTorrent:%s\nFiles:%s\nAge:%s\nLink:%s\n" % (i.name, i.verified_author, i.verified_torrent, i.files, i.age, i.download_link))
 
 class BasicTorrentCheck:
-    def checkTorrentName(torrent, fitness, targetName):
+    def checkTorrentName(self, torrent, fitness, targetName):
         ## torrent has proper name check
         searchTerm = r"\b"+targetName+r"\b"
         name = re.search( searchTerm, torrent.name, re.IGNORECASE)
@@ -59,21 +59,21 @@ class BasicTorrentCheck:
             print("Name:", name.group(), " Value +",name_value)
             fitness += name_value
 
-    def checkVerifiedAuthor(torrent, fitness):
+    def checkVerifiedAuthor(self, torrent, fitness):
         ## verified author check
         verifiedAuthor_value = 5
         if torrent.verified_author:
             print("Verified:", torrent.verified_author, " Value +", verifiedAuthor_value)
             fitness += verifiedAuthor_value
 
-    def checkVerifiedTorrent(torrent, fitness):
+    def checkVerifiedTorrent(self, torrent, fitness):
         ## verified torrent check
         verifiedTorrent_value = 5
         if torrent.verified_torrent:
             print("Verified:", torrent.verified_torrent, " Value +", verifiedTorrent_value)
             fitness += verifiedTorrent_value
 
-    def checkTorrentSeeders(targetTorrent, fitness, torrentList):
+    def checkTorrentSeeders(self, targetTorrent, fitness, torrentList):
         ## check relative seeder value
         seedList = []
         for torrent in torrentList:
@@ -85,10 +85,6 @@ class BasicTorrentCheck:
 
         if tMax == cValue:
             fitness += 5
-
-
-    def getSeeds(torrent):
-        return torrent.seed
 
 def getTorrentFitness(torrent, song):
     fitness = 0
