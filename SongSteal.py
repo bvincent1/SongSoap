@@ -26,7 +26,7 @@ from datetime import date
 FITNESS_LIST = []
 
 class FakeTorrent:
-    def __init__(self, seed):
+    def __init__(self):
         self.name = 'Muse - The 2nd Law [2012-Preview Leak] Mp3-256 NimitMak SilverRG'
         self.author = ''
         self.verified_author = True
@@ -34,13 +34,16 @@ class FakeTorrent:
         self.size = ''
         self.files = '20'
         self.age = '5 months'
-        self.seed = seed
-        self.leech = 55
+        self.seed = 0
+        self.leech = 0
         self.verified_torrent = True
         self.comments = ''
         self.torrent_link = ''
         self.magnet_link = ''
         self.download_link = 'http://torcache.net/torrent/849C56C4AC28BB84655B5AE8C423F525FCC5E0D3.torrent?title=[kickass.to]caparezza.museica.2014.rtperle'
+
+    def setSeed(self, newSeed):
+        self.seed = newSeed
 
 
 def searchSong(song):
@@ -50,7 +53,7 @@ def searchSong(song):
     print("Name:%s\nVerifiedAuthor:%s\nVerifiedTorrent:%s\nFiles:%s\nAge:%s\nLink:%s\n" % (i.name, i.verified_author, i.verified_torrent, i.files, i.age, i.download_link))
 
 class BasicTorrentCheck:
-    def checkTorrentName(self, torrent, fitness, targetName):
+    def checkTorrentName(torrent, fitness, targetName):
         ## torrent has proper name check
         searchTerm = r"\b"+targetName+r"\b"
         name = re.search( searchTerm, torrent.name, re.IGNORECASE)
@@ -59,21 +62,21 @@ class BasicTorrentCheck:
             print("Name:", name.group(), " Value +",name_value)
             fitness += name_value
 
-    def checkVerifiedAuthor(self, torrent, fitness):
+    def checkVerifiedAuthor(torrent, fitness):
         ## verified author check
         verifiedAuthor_value = 5
         if torrent.verified_author:
             print("Verified:", torrent.verified_author, " Value +", verifiedAuthor_value)
             fitness += verifiedAuthor_value
 
-    def checkVerifiedTorrent(self, torrent, fitness):
+    def checkVerifiedTorrent(torrent, fitness):
         ## verified torrent check
         verifiedTorrent_value = 5
         if torrent.verified_torrent:
             print("Verified:", torrent.verified_torrent, " Value +", verifiedTorrent_value)
             fitness += verifiedTorrent_value
 
-    def checkTorrentSeeders(self, targetTorrent, fitness, torrentList):
+    def checkTorrentSeeders(targetTorrent, fitness, torrentList):
         ## check relative seeder value
         seedList = []
         for torrent in torrentList:
@@ -127,6 +130,7 @@ if __name__ == "__main__":
     fitness = 0
 
     for i in range(10):
-        tList.append(FakeTorrent(random.randint(1,100)))
+        tList.append(FakeTorrent().setSeed(random.randint(1,100)))
 
-    checkTorrentSeeders(tList, fitness)
+    testTarget = FakeTorrent().setSeed(55)
+    BasicTorrentCheck.checkTorrentSeeders(testTarget, fitness, tList)
