@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # extra libs
 #from KickassAPI import Search, Latest, CATEGORY, ORDER, Torrent
 
@@ -133,4 +135,5 @@ if __name__ == "__main__":
         tList.append(FakeTorrent().setSeed(random.randint(1,100)))
 
     testTarget = FakeTorrent().setSeed(55)
-    BasicTorrentCheck.checkTorrentSeeders(testTarget, fitness, tList)
+    test = BasicTorrentCheck()
+    test.checkTorrentSeeders(testTarget, fitness, tList)
