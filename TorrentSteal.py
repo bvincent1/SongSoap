@@ -27,7 +27,6 @@ from datetime import date
 
 FITNESS_LIST = []
 
-Torrent
 class TorrentCollection:
   def __init__(self, tList):
     self.tList = tList
@@ -151,4 +150,4 @@ if __name__ == "__main__":
 
     testTarget = FakeTorrent().setSeed(55)
     test = BasicTorrentCheck()
-    test.checkTorrentSeeders(testTarget, fitness, tList)
+    #test.checkTorrentSeeders(testTarget, fitness, tList)
