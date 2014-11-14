@@ -27,6 +27,18 @@ from datetime import date
 
 FITNESS_LIST = []
 
+Torrent
+class TorrentCollection:
+  def __init__(self, tList):
+    self.tList = tList
+    self.fitnessList = [0]*len(tList)
+
+  def addTorrent(self,torrent):
+    self.tList.append(torrent)
+
+  def removeTorrent(self,position):
+    self.tList = self.tList[:position] + self.tList[position+1:]
+
 class FakeTorrent:
     def __init__(self):
         self.name = 'Muse - The 2nd Law [2012-Preview Leak] Mp3-256 NimitMak SilverRG'
@@ -60,6 +72,7 @@ class BasicTorrentCheck:
         searchTerm = r"\b"+targetName+r"\b"
         name = re.search( searchTerm, torrent.name, re.IGNORECASE)
         name_value = 7
+
         if name:
             print("Name:", name.group(), " Value +",name_value)
             fitness += name_value
@@ -67,6 +80,7 @@ class BasicTorrentCheck:
     def checkVerifiedAuthor(torrent, fitness):
         ## verified author check
         verifiedAuthor_value = 5
+
         if torrent.verified_author:
             print("Verified:", torrent.verified_author, " Value +", verifiedAuthor_value)
             fitness += verifiedAuthor_value
@@ -74,6 +88,7 @@ class BasicTorrentCheck:
     def checkVerifiedTorrent(torrent, fitness):
         ## verified torrent check
         verifiedTorrent_value = 5
+
         if torrent.verified_torrent:
             print("Verified:", torrent.verified_torrent, " Value +", verifiedTorrent_value)
             fitness += verifiedTorrent_value
