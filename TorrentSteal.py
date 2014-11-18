@@ -41,6 +41,17 @@ class TorrentCollection:
   def getCollection():
     return [self.tList, self.fitnessList]
 
+class TargetTorrent:
+  def __init__(self, targetName, targetCatagory):
+    self.name = targetName
+    self.category = targetCatagory
+
+  def getName():
+    return self.name
+
+  def getCatagory():
+    return self.category
+
 class FakeTorrent:
     def __init__(self):
         self.name = 'Muse - The 2nd Law [2012-Preview Leak] Mp3-256 NimitMak SilverRG'
@@ -69,7 +80,7 @@ def searchSong(song):
     print("Name:%s\nVerifiedAuthor:%s\nVerifiedTorrent:%s\nFiles:%s\nAge:%s\nLink:%s\n" % (i.name, i.verified_author, i.verified_torrent, i.files, i.age, i.download_link))
 
 class BasicTorrentCheck:
-    def checkTorrentName(torrentColl, targetName):
+    def checkTorrentName(torrentColl, targetTor):
       for tor, fit in torrentColl.getCollection():
         # torrent has proper name check
         searchTerm = r"\b"+targetName+r"\b"
@@ -80,7 +91,7 @@ class BasicTorrentCheck:
             print("Name:", name.group(), " Value +",name_value)
             fit += name_value
 
-    def checkVerifiedAuthor(torrentCol):
+    def checkVerifiedAuthor(torrentCol, targetTor):
       for tor, fit in torrentCol.getCollection():
         ## verified author check
         verifiedAuthor_value = 5
@@ -89,7 +100,7 @@ class BasicTorrentCheck:
             print("Verified:", tor.verified_author, " Value +", verifiedAuthor_value)
             fit += verifiedAuthor_value
 
-    def checkVerifiedTorrent(torrentCol):
+    def checkVerifiedTorrent(torrentCol, targetTor):
       for tor, fit in torrentCol.getCollection():
         ## verified torrent check
         verifiedTorrent_value = 5
@@ -98,7 +109,7 @@ class BasicTorrentCheck:
             print("Verified:", tor.verified_torrent, " Value +", verifiedTorrent_value)
             fit += verifiedTorrent_value
 
-    def checkTorrentSeeders(torrentCol, targetTorrent):
+    def checkTorrentSeeders(torrentCol, targetTor):
       for tor, fit in torrentCol.getCollection():
         ## check relative seeder value
         seedList = []
@@ -142,8 +153,6 @@ def getTorrentFitness(torrent, song):
     # file_type:((mp3)|(flac)), quality:(\d{3}Kbps), year:(\D|)(20\d{2})\D|(\D|)(19\d{2}\D)
     #keywords_values = [[r'(mp3)|(flac)', 3], [r"/d{3}Kbps", math.log(int(re.search(r'\b\d{3}\D', torrent.name).group()),2)], ["flac", 5]]
     # keywords?
-
-
     return fitness
 
 if __name__ == "__main__":
