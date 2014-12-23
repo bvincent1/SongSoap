@@ -23,10 +23,6 @@ from datetime import date
 ]
 """
 
-
-
-FITNESS_LIST = []
-
 class TorrentCollection:
     def __init__(self, tList):
         self.tList = tList
@@ -127,7 +123,9 @@ class BasicTorrentCheck:
 
 
     def performAllChecks(self, torrentCol, targetTor):
-        return
+        checkVerifiedTorrent(torrentCol, targetTor)
+        checkVerifiedAuthor(torrentCol, targetTor)
+        checkTorrentSeeders(torrentCol, targetTor)
 
 if __name__ == "__main__":
 
