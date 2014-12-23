@@ -121,13 +121,8 @@ class BasicTorrentCheck:
         return
 
 if __name__ == "__main__":
-    # name, artist, album
-    song = SongUtil.Song("Mk Ultra", "Muse", "The Resistance")
-    #searchSong(song)
 
     tList = []
-    fitness = 0
-
     for i in range(10):
         temp = FakeTorrent()
         temp.setSeed(random.randint(1,100))
