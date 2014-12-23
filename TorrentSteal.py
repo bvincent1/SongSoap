@@ -43,14 +43,14 @@ class TorrentCollection:
 
 class TargetTorrent:
   def __init__(self, targetName, targetCatagory):
-    self.name = targetName
-    self.category = targetCatagory
+    self.__name = targetName
+    self.__category = targetCatagory
 
   def getName():
-    return self.name
+    return self.__name
 
   def getCatagory():
-    return self.category
+    return self.__category
 
 class FakeTorrent:
     def __init__(self):
@@ -81,7 +81,7 @@ def searchSong(song):
 
 
 class BasicTorrentCheck:
-    def checkTorrentName(torrentColl, targetTor):
+    def checkTorrentName(self, torrentColl, targetTor):
       for tor, fit in torrentColl.getCollection():
         # torrent has proper name check
         searchTerm = r"\b"+targetName+r"\b"
@@ -92,7 +92,7 @@ class BasicTorrentCheck:
             print("Name:", name.group(), " Value +",name_value)
             fit += name_value
 
-    def checkVerifiedAuthor(torrentCol, targetTor):
+    def checkVerifiedAuthor(self, torrentCol, targetTor):
       for tor, fit in torrentCol.getCollection():
         ## verified author check
         verifiedAuthor_value = 5
@@ -101,7 +101,7 @@ class BasicTorrentCheck:
             print("Verified:", tor.verified_author, " Value +", verifiedAuthor_value)
             fit += verifiedAuthor_value
 
-    def checkVerifiedTorrent(torrentCol, targetTor):
+    def checkVerifiedTorrent(self, torrentCol, targetTor):
       for tor, fit in torrentCol.getCollection():
         ## verified torrent check
         verifiedTorrent_value = 5
@@ -113,19 +113,11 @@ class BasicTorrentCheck:
     def checkTorrentSeeders(self, torrentCol, targetTor):
         for tor,fit in torrentCol.getCollection():
             ## check relative seeder value
-            print(tor,fit)
-            seedList = []
-            """
-            for torrent in torrentList:
-                seedList.append(int(torrent.seed))
+            print(tor.name,fit)
 
-                cValue = int(targetTorrent.seed)
-                tMax = max(seedList)
-                tMedian = sum(seedList) / len(seedList)
 
-                if tMax == cValue:
-                    fitness += 5
-            """
+    def performAllChecks(self, torrentCol, targetTor):
+        return
 
 if __name__ == "__main__":
     # name, artist, album
@@ -136,7 +128,9 @@ if __name__ == "__main__":
     fitness = 0
 
     for i in range(10):
-        tList.append(FakeTorrent().setSeed(random.randint(1,100)))
+        temp = FakeTorrent()
+        temp.setSeed(random.randint(1,100))
+        tList.append(temp)
     tors = TorrentCollection(tList)
 
     testTarget = FakeTorrent().setSeed(55)
