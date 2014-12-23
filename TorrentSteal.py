@@ -132,9 +132,6 @@ class BasicTorrentCheck:
 
         diffSeed = (maxSeed - minSeed)/len(seed_list)
 
-        print(maxSeed, minSeed, len(seed_list))
-        print(diffSeed/5.0)
-
         for incr in range(5,0,-1):
             for i in range(len(seed_list)):
                 if seed_list[i] > maxSeed - (diffSeed * (abs(incr-5) + 1)):
