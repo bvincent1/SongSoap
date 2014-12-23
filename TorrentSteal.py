@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # extra libs
-#from KickassAPI import Search, Latest, CATEGORY, ORDER, Torrent
+from KickassAPI import Search, Latest, CATEGORY, ORDER, Torrent
 
 # total imports
 import SongUtil
@@ -111,9 +111,10 @@ class BasicTorrentCheck:
             fit += verifiedTorrent_value
 
     def checkTorrentSeeders(self, torrentCol, targetTor):
-        for tor,fit in torrentCol.getCollection():
-            ## check relative seeder value
-            print(tor.name,fit)
+        maxSeed = max([int(tor.seed) for tor,fit in torrentCol.getCollection()])
+        minSeed = min([int(tor.seed) for tor,fit in torrentCol.getCollection()])
+        ## check relative seeder value
+        print(maxSeed, minSeed)
 
 
     def performAllChecks(self, torrentCol, targetTor):
