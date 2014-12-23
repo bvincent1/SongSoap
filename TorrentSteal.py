@@ -38,8 +38,8 @@ class TorrentCollection:
   def removeTorrent(self,position):
     self.tList = self.tList[:position] + self.tList[position+1:]
 
-  def getCollection():
-    return [self.tList, self.fitnessList]
+  def getCollection(self):
+    return zip(self.tList, self.fitnessList)
 
 class TargetTorrent:
   def __init__(self, targetName, targetCatagory):
@@ -79,6 +79,7 @@ def searchSong(song):
         FITNESS_LIST.append([getTorrentFitness(i, song),i])
     print("Name:%s\nVerifiedAuthor:%s\nVerifiedTorrent:%s\nFiles:%s\nAge:%s\nLink:%s\n" % (i.name, i.verified_author, i.verified_torrent, i.files, i.age, i.download_link))
 
+
 class BasicTorrentCheck:
     def checkTorrentName(torrentColl, targetTor):
       for tor, fit in torrentColl.getCollection():
@@ -109,51 +110,22 @@ class BasicTorrentCheck:
             print("Verified:", tor.verified_torrent, " Value +", verifiedTorrent_value)
             fit += verifiedTorrent_value
 
-    def checkTorrentSeeders(torrentCol, targetTor):
-      for tor, fit in torrentCol.getCollection():
-        ## check relative seeder value
-        seedList = []
-        """
-        for torrent in torrentList:
-            seedList.append(int(torrent.seed))
+    def checkTorrentSeeders(self, torrentCol, targetTor):
+        for tor,fit in torrentCol.getCollection():
+            ## check relative seeder value
+            print(tor,fit)
+            seedList = []
+            """
+            for torrent in torrentList:
+                seedList.append(int(torrent.seed))
 
-        cValue = int(targetTorrent.seed)
-        tMax = max(seedList)
-        tMedian = sum(seedList) / len(seedList)
+                cValue = int(targetTorrent.seed)
+                tMax = max(seedList)
+                tMedian = sum(seedList) / len(seedList)
 
-        if tMax == cValue:
-            fitness += 5
-        """
-
-def getTorrentFitness(torrent, song):
-    fitness = 0
-
-    # Verified? +5
-    if torrent.verified_author:
-        fitness += 5
-
-    if torrent.verified_torrent:
-        fitness += 5
-
-    # \b(torrent.name)\b
-    # Album name? +10
-    album_values = [r'\b(torrent.name)\b', 10]
-
-    # Album year? +5
-    albumYear = 2014 # need this value
-    year_values = [r'\b(19|20)\d{2}\b', 5]
-    dtNumber, dtUnit = torrent.age.split(" ")
-    unit = ['year', 'month', 'day']
-    value = [1, 12, 365]
-    for i in range(len(unit)):
-        if dtUnit == unit[i]:
-            if (date.today().year - round((int(dtNumber)/value[i]))) == albumYear:
-                fitness += 5
-
-    # file_type:((mp3)|(flac)), quality:(\d{3}Kbps), year:(\D|)(20\d{2})\D|(\D|)(19\d{2}\D)
-    #keywords_values = [[r'(mp3)|(flac)', 3], [r"/d{3}Kbps", math.log(int(re.search(r'\b\d{3}\D', torrent.name).group()),2)], ["flac", 5]]
-    # keywords?
-    return fitness
+                if tMax == cValue:
+                    fitness += 5
+            """
 
 if __name__ == "__main__":
     # name, artist, album
@@ -165,7 +137,9 @@ if __name__ == "__main__":
 
     for i in range(10):
         tList.append(FakeTorrent().setSeed(random.randint(1,100)))
+    tors = TorrentCollection(tList)
 
     testTarget = FakeTorrent().setSeed(55)
+
     test = BasicTorrentCheck()
-    #test.checkTorrentSeeders(testTarget, fitness, tList)
+    test.checkTorrentSeeders(tors, testTarget)
