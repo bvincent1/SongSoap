@@ -96,24 +96,12 @@ def searchSong(song):
 
 
 class BasicTorrentCheck:
-    def checkTorrentName(self, torrentColl, targetTor):
-      for tor, fit in torrentColl.getCollection():
-        # torrent has proper name check
-        searchTerm = r"\b"+targetName+r"\b"
-        name = re.search( searchTerm, tor.torrent.name, re.IGNORECASE)
-        name_value = 7
-
-        if name:
-            print("Name:", name.group(), " Value +",name_value)
-            fit += name_value
-
     def checkVerifiedAuthor(self, torrentCol, targetTor):
       for tor, fit in torrentCol.getCollection():
         ## verified author check
         verifiedAuthor_value = 5
 
         if tor.verified_author:
-            print("Verified:", tor.verified_author, " Value +", verifiedAuthor_value)
             fit += verifiedAuthor_value
 
     def checkVerifiedTorrent(self, torrentCol, targetTor):
@@ -122,19 +110,19 @@ class BasicTorrentCheck:
         verifiedTorrent_value = 5
 
         if tor.verified_torrent:
-            print("Verified:", tor.verified_torrent, " Value +", verifiedTorrent_value)
             fit += verifiedTorrent_value
 
     def checkTorrentSeeders(self, torrentCol, targetTor):
+        torrentSeeders_value = 5
         seed_list = [int(tor.seed) for tor,fit in torrentCol.getCollection()]
         maxSeed = float(max(seed_list))
         minSeed = float(min(seed_list))
 
         diffSeed = (maxSeed - minSeed)/len(seed_list)
 
-        for incr in range(5,0,-1):
+        for incr in range(torrentSeeders_value,0,-1):
             for i in range(len(seed_list)):
-                if seed_list[i] > maxSeed - (diffSeed * (abs(incr-5) + 1)):
+                if seed_list[i] > maxSeed - (diffSeed * (abs(incr-torrentSeeders_value) + 1)):
                     torrentCol.incrFitness(i, incr)
 
 
@@ -154,3 +142,5 @@ if __name__ == "__main__":
 
     test = BasicTorrentCheck()
     test.checkTorrentSeeders(tors, testTarget)
+    test.checkVerifiedTorrent(tors, testTarget)
+    test.checkVerifiedAuthor(tors, testTarget)
