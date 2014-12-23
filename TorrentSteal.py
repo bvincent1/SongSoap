@@ -28,29 +28,44 @@ from datetime import date
 FITNESS_LIST = []
 
 class TorrentCollection:
-  def __init__(self, tList):
-    self.tList = tList
-    self.fitnessList = [0]*len(tList)
+    def __init__(self, tList):
+        self.tList = tList
+        self.fitnessList = [0]*len(tList)
 
-  def addTorrent(self,torrent):
-    self.tList.append(torrent)
+    def addTorrent(self,torrent):
+        self.tList.append(torrent)
 
-  def removeTorrent(self,position):
-    self.tList = self.tList[:position] + self.tList[position+1:]
+    def removeTorrent(self,position):
+        self.tList = self.tList[:position] + self.tList[position+1:]
 
-  def getCollection(self):
-    return zip(self.tList, self.fitnessList)
+    def setTorrent(self, i, v):
+        self.tList[i] = v
+
+    def setFitness(self, i, v):
+        self.fitnessList[i] = v
+
+    def getTorrent(self, i):
+        return self.tList[i]
+
+    def getFitness(self, i):
+        return self.fitnessList[i]
+
+    def incrFitness(self, i, v):
+        self.fitnessList[i] += v
+
+    def getCollection(self):
+        return zip(self.tList, self.fitnessList)
 
 class TargetTorrent:
-  def __init__(self, targetName, targetCatagory):
-    self.__name = targetName
-    self.__category = targetCatagory
+    def __init__(self, targetName, targetCatagory):
+        self.__name = targetName
+        self.__category = targetCatagory
 
-  def getName():
-    return self.__name
+    def getName():
+        return self.__name
 
-  def getCatagory():
-    return self.__category
+    def getCatagory():
+        return self.__category
 
 class FakeTorrent:
     def __init__(self):
@@ -111,10 +126,19 @@ class BasicTorrentCheck:
             fit += verifiedTorrent_value
 
     def checkTorrentSeeders(self, torrentCol, targetTor):
-        maxSeed = max([int(tor.seed) for tor,fit in torrentCol.getCollection()])
-        minSeed = min([int(tor.seed) for tor,fit in torrentCol.getCollection()])
-        ## check relative seeder value
-        print(maxSeed, minSeed)
+        seed_list = [int(tor.seed) for tor,fit in torrentCol.getCollection()]
+        maxSeed = float(max(seed_list))
+        minSeed = float(min(seed_list))
+
+        diffSeed = (maxSeed - minSeed)/len(seed_list)
+
+        print(maxSeed, minSeed, len(seed_list))
+        print(diffSeed/5.0)
+
+        for incr in range(5,0,-1):
+            for i in range(len(seed_list)):
+                if seed_list[i] > maxSeed - (diffSeed * (abs(incr-5) + 1)):
+                    torrentCol.incrFitness(i, incr)
 
 
     def performAllChecks(self, torrentCol, targetTor):
