@@ -1,8 +1,8 @@
 #!/bin/bash
-workon songsteal1
+source venv/bin/activate
 a = 0
 if [$# > $a]; then
-  python SongSteal.py $*
+  python TorrentSteal.py $*
 else
-  python SongSteal.py
+  python TorrentSteal.py
 fi
