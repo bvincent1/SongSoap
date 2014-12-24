@@ -18,4 +18,27 @@ class MusicTorrentCheck:
 		return
 
 	def performAllChecks(self, torrentCol, targetTor):
+		checkFileNumber(torrentCol, targetTor)
+
+
+class MovieTorrentCheck:
+	def checkFileNumber(self, torrentCol, targetTor):
 		return
+
+	def performAllChecks(self, torrentCol, targetTor):
+		checkFileNumber(torrentCol, targetTor)
+
+
+class EpisodeTorrentCheck:
+	def checkFileNumber(self, torrentCol, targetTor):
+		return
+
+	def performAllChecks(self, torrentCol, targetTor):
+		checkFileNumber(torrentCol, targetTor)
+
+class GameTorrentCheck:
+	def checkFileNumber(self, torrentCol, targetTor):
+		return
+
+	def performAllChecks(self, torrentCol, targetTor):
+		checkFileNumber(torrentCol, targetTor)
