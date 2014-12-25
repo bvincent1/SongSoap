@@ -132,10 +132,12 @@ class BasicTorrentCheck:
                     if verbose:
                         print(torrentCol.tList[i].name, torrentCol.fitnessList[i])
 
+    @classmethod
     def performAllChecks(self, torrentCol, targetTor, verbose = False):
-        self.checkVerifiedTorrent(torrentCol, targetTor, verbose)
-        self.checkVerifiedAuthor(torrentCol, targetTor, verbose)
-        self.checkTorrentSeeders(torrentCol, targetTor, verbose)
+        t = BasicTorrentCheck()
+        t.checkVerifiedTorrent(torrentCol, targetTor, verbose)
+        t.checkVerifiedAuthor(torrentCol, targetTor, verbose)
+        t.checkTorrentSeeders(torrentCol, targetTor, verbose)
 
 if __name__ == "__main__":
     tors = TorrentCollection([])
@@ -150,8 +152,7 @@ if __name__ == "__main__":
 
     testTarget = None
 
-    test = BasicTorrentCheck()
-    test.performAllChecks(tors, testTarget)
+    BasicTorrentCheck.performAllChecks(tors, testTarget)
 
     print([i.seed for i in tors.tList])
     print(tors.fitnessList)

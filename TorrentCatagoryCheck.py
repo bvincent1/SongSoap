@@ -14,6 +14,8 @@ from sys import argv
 from datetime import date
 
 class MusicTorrentCheck:
+	fileFormats =["mp3","flac", "m4a", "aac", "mp4"]
+
 	def checkFileNumber(self, torrentCol, targetTor):
 		return
 
@@ -22,6 +24,8 @@ class MusicTorrentCheck:
 
 
 class MovieTorrentCheck:
+	fileFormats =["avi", "mp4"]
+
 	def checkFileNumber(self, torrentCol, targetTor):
 		return
 
@@ -30,6 +34,8 @@ class MovieTorrentCheck:
 
 
 class EpisodeTorrentCheck:
+	fileFormats =["avi", "mp4"]
+
 	def checkFileNumber(self, torrentCol, targetTor):
 		return
 
@@ -37,6 +43,8 @@ class EpisodeTorrentCheck:
 		checkFileNumber(torrentCol, targetTor)
 
 class GameTorrentCheck:
+	fileFormats =["zip", "rar", "exe"]
+	
 	def checkFileNumber(self, torrentCol, targetTor):
 		return
 
