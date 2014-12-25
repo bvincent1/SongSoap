@@ -5,6 +5,7 @@ from KickassAPI import Search, Latest, CATEGORY, ORDER, Torrent
 
 # total imports
 import SongUtil
+import TorrentCatagoryCheck
 import time
 import re
 import math
@@ -23,6 +24,16 @@ from datetime import date
 ]
 """
 
+class TorrentUtil:
+    @staticmethod
+    def printTorrent(torrent):
+        print("Name: %s" % (torrent.name))
+        print("Verified Author: %s" % (torrent.verified_author))
+        print("Verified Torrent: %s" % (torrent.verified_torrent))
+        print("Files: %s" % (torrent.files))
+        print("Age: %s" % (torrent.age))
+        print("Link: %s" % (torrent.download_link))
+
 class TorrentCollection:
     def __init__(self, tList):
         self.tList = tList
@@ -30,9 +41,11 @@ class TorrentCollection:
 
     def addTorrent(self,torrent):
         self.tList.append(torrent)
+        self.fitnessList.append(0)
 
     def removeTorrent(self,position):
         self.tList = self.tList[:position] + self.tList[position+1:]
+        self.fitnessList = self.fitnessList[:position] + self.fitnessList[position+1:]
 
     def setTorrent(self, i, v):
         self.tList[i] = v
@@ -68,7 +81,7 @@ class FakeTorrent:
         self.name = 'Muse - The 2nd Law [2012-Preview Leak] Mp3-256 NimitMak SilverRG'
         self.author = ''
         self.verified_author = True
-        #self.category = CATEGORY.MUSIC
+        self.category = CATEGORY.MUSIC
         self.size = ''
         self.files = '20'
         self.age = '5 months'
@@ -83,32 +96,28 @@ class FakeTorrent:
     def setSeed(self, newSeed):
         self.seed = newSeed
 
-
-def searchSong(song):
-    #Default order is descending, you can specify ascending order:
-    for i in Search(song.artist).category(CATEGORY.MUSIC).order(ORDER.SEED):
-        FITNESS_LIST.append([getTorrentFitness(i, song),i])
-    print("Name:%s\nVerifiedAuthor:%s\nVerifiedTorrent:%s\nFiles:%s\nAge:%s\nLink:%s\n" % (i.name, i.verified_author, i.verified_torrent, i.files, i.age, i.download_link))
-
-
 class BasicTorrentCheck:
-    def checkVerifiedAuthor(self, torrentCol, targetTor):
-      for tor, fit in torrentCol.getCollection():
+    def checkVerifiedAuthor(self, torrentCol, targetTor, verbose = False):
+      for i in range(len(torrentCol.tList)):
         ## verified author check
-        verifiedAuthor_value = 5
+        verifiedAuthor_value = 7
 
-        if tor.verified_author:
-            fit += verifiedAuthor_value
+        if torrentCol.tList[i].verified_author:
+            torrentCol.incrFitness(i, verifiedAuthor_value)
+            if verbose:
+                print(torrentCol.tList[i].name, torrentCol.fitnessList[i])
 
-    def checkVerifiedTorrent(self, torrentCol, targetTor):
-      for tor, fit in torrentCol.getCollection():
+    def checkVerifiedTorrent(self, torrentCol, targetTor, verbose = False):
+      for i in range(len(torrentCol.tList)):
         ## verified torrent check
         verifiedTorrent_value = 5
 
-        if tor.verified_torrent:
-            fit += verifiedTorrent_value
+        if torrentCol.tList[i].verified_torrent:
+            torrentCol.incrFitness(i, verifiedTorrent_value)
+            if verbose:
+                print(torrentCol.tList[i].name, torrentCol.fitnessList[i])
 
-    def checkTorrentSeeders(self, torrentCol, targetTor):
+    def checkTorrentSeeders(self, torrentCol, targetTor, verbose = False):
         torrentSeeders_value = 5
         seed_list = [int(tor.seed) for tor,fit in torrentCol.getCollection()]
         maxSeed = float(max(seed_list))
@@ -120,7 +129,8 @@ class BasicTorrentCheck:
             for i in range(len(seed_list)):
                 if seed_list[i] > maxSeed - (diffSeed * (abs(incr-torrentSeeders_value) + 1)):
                     torrentCol.incrFitness(i, incr)
-
+                    if verbose:
+                        print(torrentCol.tList[i].name, torrentCol.fitnessList[i])
 
     def performAllChecks(self, torrentCol, targetTor):
         checkVerifiedTorrent(torrentCol, targetTor)
@@ -128,17 +138,22 @@ class BasicTorrentCheck:
         checkTorrentSeeders(torrentCol, targetTor)
 
 if __name__ == "__main__":
+    tors = TorrentCollection([])
+    t = Search("Muse").category(CATEGORY.MUSIC).order(ORDER.SEED)
 
-    tList = []
-    for i in range(10):
-        temp = FakeTorrent()
-        temp.setSeed(random.randint(1,100))
-        tList.append(temp)
-    tors = TorrentCollection(tList)
+    for i in t:
+        try:
+            #TorrentUtil.printTorrent(i)
+            tors.addTorrent(i)
+        except:
+            pass
 
-    testTarget = FakeTorrent().setSeed(55)
+    testTarget = None
 
     test = BasicTorrentCheck()
     test.checkTorrentSeeders(tors, testTarget)
     test.checkVerifiedTorrent(tors, testTarget)
     test.checkVerifiedAuthor(tors, testTarget)
+
+    print([i.seed for i in tors.tList])
+    print(tors.fitnessList)
