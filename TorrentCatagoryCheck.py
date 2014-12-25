@@ -19,8 +19,10 @@ class MusicTorrentCheck:
 	def checkFileNumber(self, torrentCol, targetTor):
 		return
 
-	def performAllChecks(self, torrentCol, targetTor):
-		checkFileNumber(torrentCol, targetTor)
+	@classmethod
+	def performAllChecks(torrentCol, targetTor):
+		m = MusicTorrentCheck()
+		m.checkFileNumber(torrentCol, targetTor)
 
 
 class MovieTorrentCheck:
@@ -29,8 +31,10 @@ class MovieTorrentCheck:
 	def checkFileNumber(self, torrentCol, targetTor):
 		return
 
-	def performAllChecks(self, torrentCol, targetTor):
-		checkFileNumber(torrentCol, targetTor)
+	@classmethod
+	def performAllChecks(torrentCol, targetTor):
+		m = MovieTorrentCheck()
+		m.checkFileNumber(torrentCol, targetTor)
 
 
 class EpisodeTorrentCheck:
@@ -39,14 +43,18 @@ class EpisodeTorrentCheck:
 	def checkFileNumber(self, torrentCol, targetTor):
 		return
 
-	def performAllChecks(self, torrentCol, targetTor):
-		checkFileNumber(torrentCol, targetTor)
+	@classmethod
+	def performAllChecks(torrentCol, targetTor):
+		e = EpisodeTorrentCheck()
+		e.checkFileNumber(torrentCol, targetTor)
 
 class GameTorrentCheck:
 	fileFormats =["zip", "rar", "exe"]
-	
+
 	def checkFileNumber(self, torrentCol, targetTor):
 		return
 
-	def performAllChecks(self, torrentCol, targetTor):
-		checkFileNumber(torrentCol, targetTor)
+	@classmethod
+	def performAllChecks(torrentCol, targetTor):
+		g = GameTorrentCheck()
+		g.checkFileNumber(torrentCol, targetTor)
