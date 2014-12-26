@@ -37,7 +37,7 @@ class MovieTorrentCheck:
 		m.checkFileNumber(torrentCol, targetTor)
 
 
-class EpisodeTorrentCheck:
+class TvTorrentCheck:
 	fileFormats =["avi", "mp4"]
 
 	def checkFileNumber(self, torrentCol, targetTor):

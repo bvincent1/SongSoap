@@ -3,6 +3,8 @@
 # extra libs
 from KickassAPI import Search, Latest, CATEGORY, ORDER, Torrent
 
+from transmissionrpc import Client
+
 # total imports
 import SongUtil
 import TorrentCatagoryCheck
@@ -16,12 +18,20 @@ from sys import argv
 from datetime import date
 
 """
-["name", "author", "verified_author",
-"category", "size", "files", "age",
-"seed", "leech", "verified_torrent",
-"comments", "torrent_link",
-"magnet_link", "download_link"
-]
+    MOVIES = "movies"
+    TV = "tv"
+    MUSIC = "music"
+    BOOKS = "books"
+    GAMES = "games"
+    APPLICATIONS = "applications"
+"""
+
+"""
+    ["name", "author", "verified_author",
+    "category", "size", "files", "age",
+    "seed", "leech", "verified_torrent",
+    "comments", "torrent_link",
+    "magnet_link", "download_link"]
 """
 
 class TorrentUtil:
