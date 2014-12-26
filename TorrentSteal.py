@@ -33,6 +33,7 @@ class TorrentUtil:
         print("Files: %s" % (torrent.files))
         print("Age: %s" % (torrent.age))
         print("Link: %s" % (torrent.download_link))
+        print("Magnet: %s" % (torrent.magnet_link))
 
 class TorrentCollection:
     def __init__(self, tList):
@@ -145,7 +146,7 @@ if __name__ == "__main__":
 
     for i in t:
         try:
-            #TorrentUtil.printTorrent(i)
+            TorrentUtil.printTorrent(i)
             tors.addTorrent(i)
         except:
             pass
@@ -154,5 +155,5 @@ if __name__ == "__main__":
 
     BasicTorrentCheck.performAllChecks(tors, testTarget)
 
-    print([i.seed for i in tors.tList])
-    print(tors.fitnessList)
+    #print([i.seed for i in tors.tList])
+    #print(tors.fitnessList)

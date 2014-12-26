@@ -49,7 +49,7 @@ class EpisodeTorrentCheck:
 		e.checkFileNumber(torrentCol, targetTor)
 
 class GameTorrentCheck:
-	fileFormats =["zip", "rar", "exe"]
+	fileFormats =["zip", "rar", "exe", "dll"]
 
 	def checkFileNumber(self, torrentCol, targetTor):
 		return
